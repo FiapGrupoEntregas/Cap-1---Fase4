@@ -114,9 +114,9 @@ O melhor modelo por alvo é selecionado automaticamente com base no **R²** no c
 - ✅ **IR ALÉM 2** – Dashboard analítico com correlações, tendências e previsões interativas
 ---
 ## ALUNOS + RM
- -JonattasFelipe_RM572692
- -NatanaelFilho_RM572474 
- -BrunaCamila_RM573402
+ - **1** - JonattasFelipe_RM572692
+ - **2** - NatanaelFilho_RM572474 
+ - **3** - BrunaCamila_RM573402
 
 ---
 
