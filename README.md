@@ -48,9 +48,6 @@ python ml_pipeline.py
 ```bash
 streamlit run app.py
 ```
-
-Acesse em: **http://localhost:8501**
-
 ---
 
 ## 🧠 Modelos de Machine Learning
