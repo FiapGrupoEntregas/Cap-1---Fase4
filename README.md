@@ -122,4 +122,4 @@ O melhor modelo por alvo é selecionado automaticamente com base no **R²** no c
 
 ## 👨‍💻 Tecnologias
 
-`Python` · `Scikit-Learn` · `Streamlit` · `Plotly` · `Pandas` · `NumPy` · `SQLite` · `Joblib`
+`Python` · `Scikit-Learn` · `Streamlit` · `Plotly` · `Pandas` · `NumPy` · `Joblib`
