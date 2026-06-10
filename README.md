@@ -112,6 +112,11 @@ O melhor modelo por alvo é selecionado automaticamente com base no **R²** no c
 - ✅ **PARTE 2** – Regressão múltipla com MAE/MSE/RMSE/R², recomendações de manejo
 - ✅ **IR ALÉM 1** – Banco de dados SQLite com ingestão IoT e inserção dinâmica
 - ✅ **IR ALÉM 2** – Dashboard analítico com correlações, tendências e previsões interativas
+---
+## ALUNOS + RM
+ -JonattasFelipe_RM572692
+ -NatanaelFilho_RM572474 
+ -BrunaCamila_RM573402
 
 ---
 
