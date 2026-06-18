@@ -1,6 +1,15 @@
 # Cap-1---Fase4
 
 
+
+# 🌱 FarmTech Solutions – Fase 4: Previsão Inteligente na Agricultura
+
+Projeto acadêmico que integra **sensores IoT simulados** (ESP32 + Wokwi), **API FastAPI**,
+**banco de dados Oracle**, **modelos de Machine Learning** (Scikit-Learn) e um
+**dashboard interativo** (Streamlit) para suporte à decisão no agronegócio.
+
+---
+
 ## 👨‍🎓 Alunos
 
 - **1** – JonattasFelipe_RM572692
@@ -9,11 +18,10 @@
 
 ---
 
-# 🌱 FarmTech Solutions – Fase 4: Previsão Inteligente na Agricultura
 
-Projeto acadêmico que integra **sensores IoT simulados** (ESP32 + Wokwi), **API FastAPI**,
-**banco de dados Oracle**, **modelos de Machine Learning** (Scikit-Learn) e um
-**dashboard interativo** (Streamlit) para suporte à decisão no agronegócio.
+## Links
+
+- Link do vídeo apresentação: [https://youtu.be/QSCSz7Z3c8s](https://youtu.be/QSCSz7Z3c8s)
 
 ---
 
@@ -284,5 +292,3 @@ Toda a interface do dashboard está em **português (pt-BR)**.
 `Python` · `FastAPI` · `OracleDB` · `ESP32` · `Wokwi` · `Scikit-Learn` · `Streamlit` · `Pandas` · `NumPy`
 
 ---
-
-Link do vídeo: (adicionar aqui)
