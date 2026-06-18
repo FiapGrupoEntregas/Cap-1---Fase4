@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <DHT.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 
 #define DHT_PIN 15
 #define DHT_TYPE DHT22
@@ -12,6 +14,8 @@
 #define LDR_PIN 34
 
 #define COLLECTION_INTERVAL_MS 5000
+
+const char* serverUrl = "http://host.wokwi.internal:8000/soil";
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
@@ -30,8 +34,18 @@ struct SoilData {
 
 SoilData data;
 
+void connectWiFi() {
+  WiFi.begin("Wokwi-GUEST", "", 6);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100);
+    Serial.print(".");
+  }
+  Serial.println(" Connected!");
+  Serial.println(WiFi.localIP());
+}
+
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   dht.begin();
 
@@ -44,6 +58,8 @@ void setup() {
   pinMode(PHOSPHORUS_PIN, INPUT);
   pinMode(POTASSIUM_PIN, INPUT);
   pinMode(LDR_PIN, INPUT);
+
+  connectWiFi();
 
   Serial.println(F("=== ESP32 Soil Data Collector started ==="));
   Serial.print(F("Collection interval: "));
@@ -120,8 +136,45 @@ void printData() {
   Serial.println(F("----------------------------\n"));
 }
 
+void sendData() {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println(F("Wi-Fi not connected, skipping POST"));
+    return;
+  }
+
+  HTTPClient http;
+  Serial.println(serverUrl);
+  http.begin(serverUrl);
+  http.addHeader(F("Content-Type"), F("application/json"));
+
+  String payload = "{";
+  payload += "\"air_humidity\":" + String(data.airHumidity, 2) + ",";
+  payload += "\"air_temperature\":" + String(data.airTemperature, 2) + ",";
+  payload += "\"soil_moisture_raw\":" + String(data.soilMoistureRaw) + ",";
+  payload += "\"soil_moisture_percent\":" + String(data.soilMoisturePercent) + ",";
+  payload += "\"ph\":" + String(data.ph, 2) + ",";
+  payload += "\"nitrogen\":" + String(data.nitrogen) + ",";
+  payload += "\"phosphorus\":" + String(data.phosphorus) + ",";
+  payload += "\"potassium\":" + String(data.potassium) + ",";
+  payload += "\"light_raw\":" + String(data.lightRaw) + ",";
+  payload += "\"light_percent\":" + String(data.lightPercent, 2);
+  payload += "}";
+
+  int httpCode = http.POST(payload);
+  Serial.print(F("HTTP POST code: "));
+  Serial.println(httpCode);
+  if (httpCode > 0) {
+    Serial.println(http.getString());
+  } else {
+    Serial.print(F("HTTP error: "));
+    Serial.println(http.errorToString(httpCode));
+  }
+  http.end();
+}
+
 void loop() {
   readSensors();
   printData();
+  sendData();
   delay(COLLECTION_INTERVAL_MS);
 }
