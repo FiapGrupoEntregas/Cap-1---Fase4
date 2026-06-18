@@ -23,6 +23,16 @@ Projeto acadêmico que integra **sensores IoT simulados** (ESP32 + Wokwi), **API
 
 - Link do vídeo apresentação: [https://youtu.be/QSCSz7Z3c8s](https://youtu.be/QSCSz7Z3c8s)
 
+
+---
+
+## 📌 Requisitos da Atividade Atendidos
+
+- ✅ **PARTE 1** – Pipeline ML com Scikit-Learn + dashboard Streamlit
+- ✅ **PARTE 2** – Regressão múltipla com MAE/MSE/RMSE/R², recomendações de manejo
+- ✅ **IR ALÉM 1** – Banco de dados Oracle com ingestão IoT e inserção dinâmica
+- ✅ **IR ALÉM 2** – Dashboard analítico com correlações, tendências e previsões interativas
+
 ---
 
 ## 📁 Estrutura do Projeto
@@ -235,7 +245,6 @@ O pipeline de regressão está em `src/core/ml_pipeline.py` e suporta:
 
 | Algoritmo             | Tipo          |
 |-----------------------|---------------|
-| Regressão Linear      | Linear        |
 | Random Forest         | Ensemble      |
 
 ### Variáveis que podem ser previstas
@@ -274,15 +283,6 @@ O dashboard `src/app.py` permite:
 | Previsão para o próximo ciclo   | Predição baseada no último registro recebido                 |
 
 Toda a interface do dashboard está em **português (pt-BR)**.
-
----
-
-## 📌 Requisitos da Atividade Atendidos
-
-- ✅ **PARTE 1** – Pipeline ML com Scikit-Learn + dashboard Streamlit
-- ✅ **PARTE 2** – Regressão múltipla com MAE/MSE/RMSE/R², recomendações de manejo
-- ✅ **IR ALÉM 1** – Banco de dados Oracle com ingestão IoT e inserção dinâmica
-- ✅ **IR ALÉM 2** – Dashboard analítico com correlações, tendências e previsões interativas
 
 ---
 
