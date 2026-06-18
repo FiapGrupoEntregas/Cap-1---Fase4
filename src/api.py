@@ -1,6 +1,7 @@
+import math
 import os
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import oracledb
@@ -203,29 +204,101 @@ def list_soil_data_by_month(
     return results
 
 
+def _generate_correlated_record(index: int, base_time: datetime):
+    """Gera um registro de solo com correlações realistas entre sensores."""
+    hour = index % 24
+    daylight = max(0, math.sin((hour - 6) / 12 * math.pi))
+
+    air_temperature = round(
+        22.0
+        + 8.0 * daylight
+        + random.gauss(0, 1.5),
+        2,
+    )
+    air_temperature = max(15.0, min(35.0, air_temperature))
+
+    air_humidity = round(
+        75.0
+        - 25.0 * daylight
+        + random.gauss(0, 4.0),
+        2,
+    )
+    air_humidity = max(30.0, min(95.0, air_humidity))
+
+    light_percent = round(
+        90.0 * daylight
+        + random.gauss(0, 8.0),
+        2,
+    )
+    light_percent = max(0.0, min(100.0, light_percent))
+    light_raw = int(light_percent / 100.0 * 4095)
+
+    soil_moisture_percent = round(
+        60.0
+        - 20.0 * daylight
+        - 0.4 * air_temperature
+        + random.gauss(0, 5.0),
+        2,
+    )
+    soil_moisture_percent = max(0.0, min(100.0, soil_moisture_percent))
+    soil_moisture_raw = int((1 - soil_moisture_percent / 100.0) * 4095)
+
+    ph = round(
+        6.5
+        - 0.02 * air_temperature
+        + random.gauss(0, 0.3),
+        2,
+    )
+    ph = max(4.0, min(9.0, ph))
+
+    nitrogen = int(
+        180
+        - 1.5 * air_temperature
+        + 0.5 * soil_moisture_percent
+        + random.gauss(0, 15)
+    )
+    nitrogen = max(0, min(255, nitrogen))
+
+    phosphorus = int(
+        160
+        - 1.2 * air_temperature
+        + 0.4 * soil_moisture_percent
+        + random.gauss(0, 15)
+    )
+    phosphorus = max(0, min(255, phosphorus))
+
+    potassium = int(
+        200
+        - 1.8 * air_temperature
+        + 0.6 * soil_moisture_percent
+        + random.gauss(0, 15)
+    )
+    potassium = max(0, min(255, potassium))
+
+    created_at = base_time + timedelta(minutes=index * 5)
+
+    return {
+        "air_humidity": air_humidity,
+        "air_temperature": air_temperature,
+        "soil_moisture_raw": soil_moisture_raw,
+        "soil_moisture_percent": int(soil_moisture_percent),
+        "ph": ph,
+        "nitrogen": nitrogen,
+        "phosphorus": phosphorus,
+        "potassium": potassium,
+        "light_raw": light_raw,
+        "light_percent": light_percent,
+        "latitude": -23.5505,
+        "longitude": -46.6333,
+        "created_at": created_at,
+        "updated_at": created_at,
+    }
+
+
 @app.post("/simulate")
 def simulate_soil_data():
-    now = datetime.now()
-    records = []
-    for _ in range(200):
-        records.append(
-            {
-                "air_humidity": round(random.uniform(30.0, 90.0), 2),
-                "air_temperature": round(random.uniform(15.0, 35.0), 2),
-                "soil_moisture_raw": random.randint(0, 1023),
-                "soil_moisture_percent": random.randint(0, 100),
-                "ph": round(random.uniform(4.0, 9.0), 2),
-                "nitrogen": random.randint(0, 255),
-                "phosphorus": random.randint(0, 255),
-                "potassium": random.randint(0, 255),
-                "light_raw": random.randint(0, 1023),
-                "light_percent": round(random.uniform(0.0, 100.0), 2),
-                "latitude": round(random.uniform(-90.0, 90.0), 6),
-                "longitude": round(random.uniform(-180.0, 180.0), 6),
-                "created_at": now,
-                "updated_at": now,
-            }
-        )
+    base_time = datetime.now() - timedelta(days=7)
+    records = [_generate_correlated_record(i, base_time) for i in range(200)]
 
     try:
         with get_db_connection() as connection:
